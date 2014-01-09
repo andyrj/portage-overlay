@@ -78,21 +78,22 @@ pkg_setup() {
 	git checkout -q -b local-gentoo ${module_branch} || die
 	combinediff ${PN}-base.patch ${PN}-standalone.patch  > "${T}"/combined-1.patch
 	combinediff "${T}"/combined-1.patch ${PN}-mmap.patch > ${PN}-standalone-base-mmap-combined.patch
-	if ! ( patch -p1 --dry-run --force -R -d ${KV_DIR} < ${PN}-standalone-base-mmap-combined.patch > /dev/null ); then
-		if use kernel-patch; then
-			cd ${KV_DIR}
-			ewarn "Patching your kernel..."
-			patch --no-backup-if-mismatch --force -p1 -R -d ${KV_DIR} < "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch >/dev/null
-			epatch "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch
-			ewarn "You need to compile your kernel with the applied patch"
-			ewarn "to be able to load and use the aufs kernel module"
-		else
-			eerror "You need to apply a patch to your kernel to compile and run the ${PN} module"
-			eerror "Either enable the kernel-patch useflag to do it with this ebuild"
-			eerror "or apply "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch by hand"
-			die "missing kernel patch, please apply it first"
-		fi
-	fi
+	# Manualy patching kernel as the automated version doesn't work with hardened-sources
+	#if ! ( patch -p1 --dry-run --force -R -d ${KV_DIR} < ${PN}-standalone-base-mmap-combined.patch > /dev/null ); then
+	#	if use kernel-patch; then
+	#		cd ${KV_DIR}
+	#		ewarn "Patching your kernel..."
+	#		patch --no-backup-if-mismatch --force -p1 -R -d ${KV_DIR} < "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch >/dev/null
+	#		epatch "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch
+	#		ewarn "You need to compile your kernel with the applied patch"
+	#		ewarn "to be able to load and use the aufs kernel module"
+	#	else
+	#		eerror "You need to apply a patch to your kernel to compile and run the ${PN} module"
+	#		eerror "Either enable the kernel-patch useflag to do it with this ebuild"
+	#		eerror "or apply "${T}"/${PN}-standalone/${PN}-standalone-base-mmap-combined.patch by hand"
+	#		die "missing kernel patch, please apply it first"
+	#	fi
+	#fi
 	popd &> /dev/null
 	export PKG_SETUP_HAS_BEEN_RAN=1
 }
