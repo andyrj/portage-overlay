@@ -45,5 +45,5 @@ pkg_postinst() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/aufs3-standalone-base-mmap-combined-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.patch"
+	epatch "${FILESDIR}/aufs3-standalone-base-mmap-combined-3.11.7.patch"
 }
