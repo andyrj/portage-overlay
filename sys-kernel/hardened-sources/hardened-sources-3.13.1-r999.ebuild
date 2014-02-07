@@ -45,8 +45,7 @@ pkg_postinst() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/aufs3-base.patch"
-	epatch "${FILESDIR}/aufs3-kbuild.patch"
+	epatch "${FILESDIR}/aufs3-base.patch"	
 	epatch "${FILESDIR}/aufs3-mmap-hardened.patch"
 	epatch "${FILESDIR}/aufs3-standalone.patch"
 	epatch "${FILESDIR}/apparmor-networking-gentoo-hardened-3.13.1.patch"
