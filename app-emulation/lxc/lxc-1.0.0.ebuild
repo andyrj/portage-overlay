@@ -6,7 +6,7 @@ EAPI="4"
 
 MY_P="${P/_/-}"
 
-BACKPORTS=1
+BACKPORTS=0
 
 inherit eutils linux-info versionator flag-o-matic
 
@@ -82,13 +82,13 @@ ERROR_GRKERNSEC_CHROOT_CAPS=":CONFIG_GRKERNSEC_CHROOT_CAPS	some GRSEC features m
 
 DOCS=(AUTHORS CONTRIBUTING MAINTAINERS TODO README doc/FAQ.txt)
 
-#src_prepare() {
-	#sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g' configure.ac || die
-	#if [[ -n ${BACKPORTS} ]]; then
-	#	epatch "${WORKDIR}"/patches/*
-	#	eautoreconf
-	#fi
-#}
+src_prepare() {
+	sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g' configure.ac || die
+	if [[ -n ${BACKPORTS} ]]; then
+		epatch "${WORKDIR}"/patches/*
+		eautoreconf
+	fi
+}
 
 src_configure() {
 	append-flags -fno-strict-aliasing
