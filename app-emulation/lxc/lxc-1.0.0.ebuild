@@ -1,40 +1,54 @@
 # Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/lxc/lxc-0.8.0-r1.ebuild,v 1.3 2013/09/10 05:22:55 maekke Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/lxc/lxc-0.8.0-r1.ebuild,v 1.2 2013/05/04 21:42:25 jlec Exp $
 
-EAPI="4"
+EAPI="5"
+PYTHON_COMPAT=( python{3_1,3_2,3_3} )
 
-MY_P="${P/_/-}"
+AUTOTOOLS_AUTORECONF=true
+AUTOTOOLS_IN_SOURCE_BUILD=1
 
-BACKPORTS=0
-
-inherit eutils linux-info versionator flag-o-matic
-
-if [[ -n ${BACKPORTS} ]]; then
-	inherit autotools
-fi
+inherit autotools-utils eutils flag-o-matic linux-info versionator distutils-r1
 
 DESCRIPTION="LinuX Containers userspace utilities"
 HOMEPAGE="http://linuxcontainers.org/"
-SRC_URI="http://linuxcontainers.org/downloads/${MY_P}.tar.gz"
-S="${WORKDIR}/${MY_P}"
+
+if [[ "${PV}" == "9999" ]]; then
+    inherit git-2
+    EGIT_REPO_URI="https://github.com/lxc/lxc.git"
+	SRC_URI=""
+	S="${WORKDIR}/lxc-master"
+else
+	SRC_URI="https://github.com/lxc/lxc/archive/${P}.tar.gz"
+fi
+
+[[ "${PV}" == "0.9.0" ]] && use_usleep="sys-apps/usleep"
 
 KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
 
 LICENSE="LGPL-3"
 SLOT="0"
-IUSE="examples"
+IUSE="doc examples +lua +python seccomp"
 
-RDEPEND="sys-libs/libcap"
+RDEPEND="
+	lua? ( >=dev-lang/lua-5.1 
+			dev-lua/luafilesystem 
+			dev-lua/alt-getopt
+			${use_usleep}
+			)
+	python? ( >=dev-lang/python-3 )
+	sys-libs/libcap
+	net-libs/gnutls
+	seccomp? ( sys-libs/libseccomp[static-libs] )"
 
 DEPEND="${RDEPEND}
-	app-text/docbook-sgml-utils
+	doc? ( app-text/docbook2X )
 	>=sys-kernel/linux-headers-3.2"
 
 RDEPEND="${RDEPEND}
-	sys-apps/util-linux
 	app-misc/pax-utils
-	>=sys-apps/openrc-0.9.9.1
+	sys-apps/openrc
+	sys-apps/util-linux
 	virtual/awk"
 
 CONFIG_CHECK="~CGROUPS ~CGROUP_DEVICE
@@ -72,6 +86,7 @@ ERROR_MACVLAN="CONFIG_MACVLAN:	needed for internal (inter-container) networking"
 
 ERROR_POSIX_MQUEUE="CONFIG_POSIX_MQUEUE:	needed for lxc-execute command"
 
+#Is this true anymore ?
 ERROR_NETPRIO_CGROUP="CONFIG_NETPRIO_CGROUP:	as of kernel 3.3 and lxc 0.8.0_rc1 this causes LXCs to fail booting."
 
 ERROR_GRKERNSEC_CHROOT_MOUNT=":CONFIG_GRKERNSEC_CHROOT_MOUNT	some GRSEC features make LXC unusable see postinst notes"
@@ -79,15 +94,33 @@ ERROR_GRKERNSEC_CHROOT_DOUBLE=":CONFIG_GRKERNSEC_CHROOT_DOUBLE	some GRSEC featur
 ERROR_GRKERNSEC_CHROOT_PIVOT=":CONFIG_GRKERNSEC_CHROOT_PIVOT	some GRSEC features make LXC unusable see postinst notes"
 ERROR_GRKERNSEC_CHROOT_CHMOD=":CONFIG_GRKERNSEC_CHROOT_CHMOD	some GRSEC features make LXC unusable see postinst notes"
 ERROR_GRKERNSEC_CHROOT_CAPS=":CONFIG_GRKERNSEC_CHROOT_CAPS	some GRSEC features make LXC unusable see postinst notes"
+ERROR_GRKERNSEC_CHROOT_MKNOD=":CONFIG_GRKERNSEC_CHROOT_MKNOD	some GRSEC features make LXC unusable see postinst notes"
 
 DOCS=(AUTHORS CONTRIBUTING MAINTAINERS TODO README doc/FAQ.txt)
 
 src_prepare() {
-	sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g' configure.ac || die
-	if [[ -n ${BACKPORTS} ]]; then
-		epatch "${WORKDIR}"/patches/*
-		eautoreconf
+	#Patch if any
+	for patch_file in $(ls ${FILESDIR}/${P}-*.patch 2>/dev/null); do
+		epatch "${patch_file}"
+	done
+
+	# prepare python
+	if use python; then
+		#First we need one python impl to pass the configure
+		echo_epython() {
+		    echo ${EPYTHON}
+		}
+		ONEPYTHON=$(python_foreach_impl echo_epython | \
+						tail -n1 | \
+						sed "s,python,python-,g")
+		sed -i "s,python3,${ONEPYTHON}," configure.ac || die
+		#Disable python management by Makefile
+		echo > src/python-lxc/Makefile.am
 	fi
+
+	sed -i 's,docbook2x-man,docbook2man.pl,' configure.ac || die
+
+	autotools-utils_src_prepare
 }
 
 src_configure() {
@@ -97,26 +130,44 @@ src_configure() {
 		--localstatedir=/var \
 		--bindir=/usr/sbin \
 		--docdir=/usr/share/doc/${PF} \
-		--with-config-path=/etc/lxc	\
+		--with-config-path=/var/lib/lxc	\
 		--with-rootfs-path=/usr/lib/lxc/rootfs \
-		--enable-doc \
+		$(use_enable doc) \
+		$(use_enable seccomp) \
 		--disable-apparmor \
-		$(use_enable examples)
+		$(use_enable examples) \
+		$(use_enable lua) \
+		$(use_enable python)
+}
+
+src_compile() {
+	default
+
+	if use python
+	then
+	  (
+	    cd "${S}/src/python-lxc"
+	    python_foreach_impl distutils-r1_python_compile build_ext -I ../ -L ../lxc
+	  )
+	fi
 }
 
 src_install() {
 	default
 
-	rm -r "${D}"/usr/sbin/lxc-setcap \
-		|| die "unable to remove lxc-setcap"
+	if use python
+	then
+		cd "${S}/src/python-lxc"
+		echo ${BUILD_DIR}
+		python_foreach_impl distutils-r1_python_install
+	fi
 
-	keepdir /etc/lxc /usr/lib/lxc/rootfs
+	keepdir /etc/lxc /usr/lib/lxc/rootfs /var/log/lxc
 
 	find "${D}" -name '*.la' -delete
 
-	# Gentoo-specific additions!
+	# Gentoo's init script
 	newinitd "${FILESDIR}/${PN}.initd.2" ${PN}
-	keepdir /var/log/lxc
 }
 
 pkg_postinst() {
@@ -127,15 +178,9 @@ pkg_postinst() {
 	elog "For further information about LXC development see"
 	elog "http://blog.flameeyes.eu/tag/lxc" # remove once proper doc is available
 	elog ""
-	ewarn "With version 0.7.4, the mountpoint syntax came back to the one used by 0.7.2"
-	ewarn "and previous versions. This means you'll have to use syntax like the following"
-	ewarn ""
-	ewarn "    lxc.rootfs = /container"
-	ewarn "    lxc.mount.entry = /usr/portage /container/usr/portage none bind 0 0"
-	ewarn ""
-	ewarn "To use the Fedora, Debian and (various) Ubuntu auto-configuration scripts, you"
-	ewarn "will need sys-apps/yum or dev-util/debootstrap."
-	ewarn ""
+	elog "To use the Fedora, Debian and (various) Ubuntu auto-configuration scripts, you"
+	elog "will need sys-apps/yum or dev-util/debootstrap."
+	elog ""
 	ewarn "Some GrSecurity settings in relation to chroot security will cause LXC not to"
 	ewarn "work, while others will actually make it much more secure. Please refer to"
 	ewarn "Diego Elio Pettenò's weblog at http://blog.flameeyes.eu/tag/lxc for further"
