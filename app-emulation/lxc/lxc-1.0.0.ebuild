@@ -2,21 +2,27 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-emulation/lxc/lxc-0.8.0-r1.ebuild,v 1.3 2013/09/10 05:22:55 maekke Exp $
 
-EAPI=5
+EAPI="4"
 
-AUTOTOOLS_AUTORECONF=true
-AUTOTOOLS_IN_SOURCE_BUILD=1
+MY_P="${P/_/-}"
 
-inherit autotools-utils eutils git-2 linux-info versionator flag-o-matic
+BACKPORTS=1
+
+inherit eutils linux-info versionator flag-o-matic
+
+if [[ -n ${BACKPORTS} ]]; then
+	inherit autotools
+fi
 
 DESCRIPTION="LinuX Containers userspace utilities"
-HOMEPAGE="http://lxc.sourceforge.net/"
-SRC_URI=""
-EGIT_REPO_URI="https://github.com/lxc/lxc.git"
+HOMEPAGE="http://linuxcontainers.org/"
+SRC_URI="http://linuxcontainers.org/downloads/${MY_P}.tar.gz"
+S="${WORKDIR}/${MY_P}"
+
+KEYWORDS="~amd64 ~arm ~ppc64 ~x86"
 
 LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS=""
 IUSE="examples"
 
 RDEPEND="sys-libs/libcap"
@@ -54,8 +60,6 @@ CONFIG_CHECK="~CGROUPS ~CGROUP_DEVICE
 	~!GRKERNSEC_CHROOT_CAPS
 "
 
-#S="${WORKDIR}/${MY_P}"
-
 ERROR_DEVPTS_MULTIPLE_INSTANCES="CONFIG_DEVPTS_MULTIPLE_INSTANCES:	needed for pts inside container"
 
 ERROR_CGROUP_FREEZER="CONFIG_CGROUP_FREEZER:	needed to freeze containers"
@@ -78,45 +82,35 @@ ERROR_GRKERNSEC_CHROOT_CAPS=":CONFIG_GRKERNSEC_CHROOT_CAPS	some GRSEC features m
 
 DOCS=(AUTHORS CONTRIBUTING MAINTAINERS TODO README doc/FAQ.txt)
 
-src_prepare() {
-	sed \
-		-e "/PKG_CHECK_MODULES/s:python3:python-3.3:g" \
-		-i configure.ac || die
-
-	autotools-utils_src_prepare
-}
+#src_prepare() {
+	#sed -i 's/AM_CONFIG_HEADER/AC_CONFIG_HEADERS/g' configure.ac || die
+	#if [[ -n ${BACKPORTS} ]]; then
+	#	epatch "${WORKDIR}"/patches/*
+	#	eautoreconf
+	#fi
+#}
 
 src_configure() {
 	append-flags -fno-strict-aliasing
 
-	local myeconfargs=(
-		--localstatedir=/var
-		--bindir=/usr/sbin
-		--docdir=/usr/share/doc/${PF}
-		--disable-rpath
-		--enable-doc
-		--with-config-path=/etc/lxc
-		--with-rootfs-path=/usr/lib/lxc/rootfs
-		--with-log-path=/var/log/lxc
-		--with-distro=gentoo
-		--disable-apparmor
-		--disable-selinux
-		--disable-lua
-		--enable-python
-#		--enable-seccomp
-		--disable-seccomp
+	econf \
+		--localstatedir=/var \
+		--bindir=/usr/sbin \
+		--docdir=/usr/share/doc/${PF} \
+		--with-config-path=/etc/lxc	\
+		--with-rootfs-path=/usr/lib/lxc/rootfs \
+		--enable-doc \
+		--disable-apparmor \
 		$(use_enable examples)
-		)
-	autotools-utils_src_configure
 }
 
-_src_install() {
+src_install() {
 	default
 
-#	rm -r "${D}"/usr/sbin/lxc-setcap \
-#		|| die "unable to remove lxc-setcap"
+	rm -r "${D}"/usr/sbin/lxc-setcap \
+		|| die "unable to remove lxc-setcap"
 
-	keepdir /etc/lxc /usr/lib/lxc/rootfs /var/log/lxc
+	keepdir /etc/lxc /usr/lib/lxc/rootfs
 
 	find "${D}" -name '*.la' -delete
 
@@ -144,6 +138,6 @@ pkg_postinst() {
 	ewarn ""
 	ewarn "Some GrSecurity settings in relation to chroot security will cause LXC not to"
 	ewarn "work, while others will actually make it much more secure. Please refer to"
-	ewarn "Diego Elio PettenÃ²'s weblog at http://blog.flameeyes.eu/tag/lxc for further"
+	ewarn "Diego Elio Pettenò's weblog at http://blog.flameeyes.eu/tag/lxc for further"
 	ewarn "details."
 }
