@@ -35,6 +35,20 @@ src_prepare() {
 	epatch "${FILESDIR}"/${PN}-4.1.3-dots-in-usernames.patch #22920
 	
 	# ubuntu patches for user namespace support http://http://bazaar.launchpad.net/~ubuntu-branches/ubuntu/trusty/shadow/trusty/files/head:/debian/patches
+	epatch "${FILESDIR}"/503_shadowconfig.8
+	epatch "${FILESDIR}"/008_login_log_failure_in_FTMP
+	epatch "${FILESDIR}"/429_login_FAILLOG_ENAB
+	epatch "${FILESDIR}"/401_cppw_src.dpatch
+	epatch "${FILESDIR}"/402_cppw_selinux
+	epatch "${FILESDIR}"/506_relaxed_usernames
+	epatch "${FILESDIR}"/542_useradd-O_option
+	epatch "${FILESDIR}"/501_commonio_group_shadow
+	epatch "${FILESDIR}"/463_login_delay_obeys_to_PAM
+	epatch "${FILESDIR}"/523_su_arguments_are_concatenated
+	epatch "${FILESDIR}"/523_su_arguments_are_no_more_concatenated_by_default
+	epatch "${FILESDIR}"/508_nologin_in_usr_sbin
+	epatch "${FILESDIR}"/505_useradd_recommend_adduser
+	epatch "${FILESDIR}"/495_stdout-encrypted-password
 	epatch "${FILESDIR}"/userns/01_userns_doc
 	epatch "${FILESDIR}"/userns/02_userns_doc_login.defs
 	epatch "${FILESDIR}"/userns/03_userns_implement_commonio_append
@@ -50,7 +64,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/userns/13_subordinate_parse_static_buf
 	epatch "${FILESDIR}"/userns/14_fix_getopt
 	epatch "${FILESDIR}"/userns/16_add-argument-sanity-checking.patch
-	
+	epatch "${FILESDIR}"/496_su_kill_process_group
 	# better defaults from stgraber so containers can have nobody:nobody which requires 65534
 	epatch "${FILESDIR}"/1000_configure_userns 
 	
