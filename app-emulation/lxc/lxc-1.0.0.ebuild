@@ -19,7 +19,8 @@ if [[ "${PV}" == "9999" ]]; then
 	SRC_URI=""
 	S="${WORKDIR}/lxc-master"
 else
-	SRC_URI="https://github.com/lxc/lxc/archive/${P}.tar.gz"
+	SRC_URI="http://linuxcontainers.org/downloads/${P}.tar.gz"
+	#SRC_URI="https://github.com/lxc/lxc/archive/${P}.tar.gz"
 fi
 
 [[ "${PV}" == "0.9.0" ]] && use_usleep="sys-apps/usleep"
