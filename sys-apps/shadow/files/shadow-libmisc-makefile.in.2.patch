@@ -1,0 +1,30 @@
+diff -rupN libmisc-orig/Makefile.in libmisc/Makefile.in
+--- libmisc-orig/Makefile.in	2014-02-23 20:40:58.327639073 -0800
++++ libmisc/Makefile.in	2014-02-23 20:44:31.732641869 -0800
+@@ -87,7 +87,7 @@ am_libmisc_a_OBJECTS = addgrps.$(OBJEXT)
+ 	ulimit.$(OBJEXT) user_busy.$(OBJEXT) utmp.$(OBJEXT) \
+ 	valid.$(OBJEXT) xgetpwnam.$(OBJEXT) xgetpwuid.$(OBJEXT) \
+ 	xgetgrnam.$(OBJEXT) xgetgrgid.$(OBJEXT) xgetspnam.$(OBJEXT) \
+-	xmalloc.$(OBJEXT) yesno.$(OBJEXT)
++	xmalloc.$(OBJEXT) yesno.$(OBJEXT) idmapping.$(OBJEXT)
+ libmisc_a_OBJECTS = $(am_libmisc_a_OBJECTS)
+ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+@@ -330,7 +330,8 @@ libmisc_a_SOURCES = \
+ 	xgetgrgid.c \
+ 	xgetspnam.c \
+ 	xmalloc.c \
+-	yesno.c
++	yesno.c \
++	idmapping.c
+ 
+ all: all-am
+ 
+@@ -440,6 +441,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xgetspnam.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmalloc.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/yesno.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/idmapping.Po@am__quote@
+ 
+ .c.o:
+ @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
