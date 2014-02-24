@@ -67,8 +67,10 @@ src_prepare() {
 	epatch "${FILESDIR}"/userns/16_add-argument-sanity-checking.patch
 	epatch "${FILESDIR}"/496_su_kill_process_group
 	# better defaults from stgraber so containers can have nobody:nobody which requires 65534
-	epatch "${FILESDIR}"/1000_configure_userns 
-	
+	epatch "${FILESDIR}"/1000_configure_userns
+	# my patch to fix lib/Makefile ...  not sure how ubuntu even builds this as is on the repo...
+	epatch "${FILESDIR}"/shadow-makefile.patch
+
 	epatch_user
 	elibtoolize
 }
