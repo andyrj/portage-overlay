@@ -73,6 +73,9 @@ src_prepare() {
 	# my patch to fix libmisc/Makefile.in ... same as above... missing some .c and object references
 	epatch "${FILESDIR}"/shadow-libmisc-makefile.in.patch
 	epatch "${FILESDIR}"/shadow-libmisc-makefile.in.1.patch # typo in first libmisc-makefile.in.patch....
+	# my patch to fix src/Makefile.in ... this was left off because the patches I applied were for debian package...
+	# maybe I should pull over part of dh-autoreconf to generate these in the build?
+	epatch "${FILESDIR}"/shadow-src-makefile.in.patch
 
 	epatch_user
 	elibtoolize
