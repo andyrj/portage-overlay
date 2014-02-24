@@ -76,6 +76,7 @@ src_prepare() {
 	# my patch to fix src/Makefile.in ... this was left off because the patches I applied were for debian package...
 	# maybe I should pull over part of dh-autoreconf to generate these in the build?
 	epatch "${FILESDIR}"/shadow-src-makefile.in.patch
+	epatch "${FILESDIR}"/shadow-src-makefile.in.1.patch
 
 	epatch_user
 	elibtoolize

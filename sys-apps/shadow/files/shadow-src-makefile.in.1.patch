@@ -1,0 +1,12 @@
+diff -rupN src-orig/Makefile src/Makefile
+--- src-orig/Makefile	2014-02-23 20:12:24.420616617 -0800
++++ src/Makefile	2014-02-23 20:15:01.104618670 -0800
+@@ -55,7 +55,7 @@ bin_PROGRAMS = groups$(EXEEXT) login$(EX
+ sbin_PROGRAMS = nologin$(EXEEXT)
+ ubin_PROGRAMS = faillog$(EXEEXT) lastlog$(EXEEXT) chage$(EXEEXT) \
+ 	chfn$(EXEEXT) chsh$(EXEEXT) expiry$(EXEEXT) gpasswd$(EXEEXT) \
+-	newgrp$(EXEEXT) passwd$(EXEEXT)
++	newgrp$(EXEEXT) passwd$(EXEEXT) newgidmap$(EXEEXT) newuidmap$(EXEEXT)
+ usbin_PROGRAMS = chgpasswd$(EXEEXT) chpasswd$(EXEEXT) \
+ 	groupadd$(EXEEXT) groupdel$(EXEEXT) groupmems$(EXEEXT) \
+ 	groupmod$(EXEEXT) grpck$(EXEEXT) grpconv$(EXEEXT) \
