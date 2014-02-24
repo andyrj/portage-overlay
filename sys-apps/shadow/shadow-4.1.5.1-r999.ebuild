@@ -71,7 +71,7 @@ src_prepare() {
 	# my patch to fix lib/Makefile.in ...  not sure how ubuntu even builds this as is on the repo...
 	epatch "${FILESDIR}"/shadow-makefile.in.patch
 	# my patch to fix libmisc/Makefile.in ... same as above... missing some .c and object references
-	epatch "$(FILESDIR)"/shadow-libmisc-makefile.in.patch
+	epatch "${FILESDIR}"/shadow-libmisc-makefile.in.patch
 
 	epatch_user
 	elibtoolize
