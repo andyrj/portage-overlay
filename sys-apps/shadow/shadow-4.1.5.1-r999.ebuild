@@ -63,6 +63,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/userns/12_userns_selinuxlibs
 	epatch "${FILESDIR}"/userns/13_subordinate_parse_static_buf
 	epatch "${FILESDIR}"/userns/14_fix_getopt
+	epatch "${FILESDIR}"/userns/manpagetypo
 	epatch "${FILESDIR}"/userns/16_add-argument-sanity-checking.patch
 	epatch "${FILESDIR}"/496_su_kill_process_group
 	# better defaults from stgraber so containers can have nobody:nobody which requires 65534
