@@ -1,0 +1,12 @@
+diff -rupN libmisc-orig/Makefile.in libmisc/Makefile.in
+--- libmisc-orig/Makefile.in	2014-02-23 18:41:57.494545512 -0800
++++ libmisc/Makefile.in	2014-02-23 18:42:08.725545659 -0800
+@@ -73,7 +73,7 @@ am_libmisc_a_OBJECTS = addgrps.$(OBJEXT)
+ 	console.$(OBJEXT) copydir.$(OBJEXT) entry.$(OBJEXT) \
+ 	env.$(OBJEXT) failure.$(OBJEXT) find_new_gid.$(OBJEXT) \
+ 	find_new_uid.$(OBJEXT) getdate.$(OBJEXT) \
+-	find_new_gids.$(OBJEXT) find_new_uids.$(OBJEXT) \
++	find_new_sub_gids.$(OBJEXT) find_new_sub_uids.$(OBJEXT) \
+ 	getgr_nam_gid.$(OBJEXT) getrange.$(OBJEXT) hushed.$(OBJEXT) \
+ 	isexpired.$(OBJEXT) limits.$(OBJEXT) list.$(OBJEXT) \
+ 	log.$(OBJEXT) loginprompt.$(OBJEXT) mail.$(OBJEXT) \

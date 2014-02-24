@@ -72,6 +72,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/shadow-makefile.in.patch
 	# my patch to fix libmisc/Makefile.in ... same as above... missing some .c and object references
 	epatch "${FILESDIR}"/shadow-libmisc-makefile.in.patch
+	epatch "${FILESDIR}"/shadow-libmisc-makefile.in.1.patch # typo in first libmisc-makefile.in.patch....
 
 	epatch_user
 	elibtoolize
