@@ -1,6 +1,6 @@
-diff -rupN src-orig/Makefile src/Makefile
---- src-orig/Makefile	2014-02-23 20:12:24.420616617 -0800
-+++ src/Makefile	2014-02-23 20:15:01.104618670 -0800
+diff -rupN src-orig/Makefile.in src/Makefile.in
+--- src-orig/Makefile.in	2014-02-23 20:23:25.245625275 -0800
++++ src/Makefile.in	2014-02-23 20:24:21.613626013 -0800
 @@ -55,7 +55,7 @@ bin_PROGRAMS = groups$(EXEEXT) login$(EX
  sbin_PROGRAMS = nologin$(EXEEXT)
  ubin_PROGRAMS = faillog$(EXEEXT) lastlog$(EXEEXT) chage$(EXEEXT) \
