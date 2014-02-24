@@ -1,0 +1,38 @@
+diff -rupN libmisc-orig/Makefile.in libmisc/Makefile.in
+--- libmisc-orig/Makefile.in	2014-02-23 18:22:50.750530487 -0800
++++ libmisc/Makefile.in	2014-02-23 18:25:23.116532484 -0800
+@@ -73,6 +73,7 @@ am_libmisc_a_OBJECTS = addgrps.$(OBJEXT)
+ 	console.$(OBJEXT) copydir.$(OBJEXT) entry.$(OBJEXT) \
+ 	env.$(OBJEXT) failure.$(OBJEXT) find_new_gid.$(OBJEXT) \
+ 	find_new_uid.$(OBJEXT) getdate.$(OBJEXT) \
++	find_new_gids.$(OBJEXT) find_new_uids.$(OBJEXT) \
+ 	getgr_nam_gid.$(OBJEXT) getrange.$(OBJEXT) hushed.$(OBJEXT) \
+ 	isexpired.$(OBJEXT) limits.$(OBJEXT) list.$(OBJEXT) \
+ 	log.$(OBJEXT) loginprompt.$(OBJEXT) mail.$(OBJEXT) \
+@@ -287,6 +288,8 @@ libmisc_a_SOURCES = \
+ 	failure.h \
+ 	find_new_gid.c \
+ 	find_new_uid.c \
++	find_new_sub_uids.c \
++	find_new_sub_gids.c \
+ 	getdate.h \
+ 	getdate.y \
+ 	getgr_nam_gid.c \
+@@ -394,6 +397,8 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/failure.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_new_gid.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_new_uid.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_new_sub_gids.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/find_new_sub_uids.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getdate.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getgr_nam_gid.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/getrange.Po@am__quote@
+@@ -539,7 +544,7 @@ distdir: $(DISTFILES)
+ 	    fi; \
+ 	    if test -d $(srcdir)/$$file && test $$d != $(srcdir); then \
+ 	      cp -fpR $(srcdir)/$$file "$(distdir)$$dir" || exit 1; \
+-	      find "$(distdir)/$$file" -type d ! -perm -700 -exec chmod u+rwx {} \;; \
++	      find "$(distdir)/$$file" -type d ! -perm -700 -exec /chmod u+rwx {} \;; \
+ 	    fi; \
+ 	    cp -fpR $$d/$$file "$(distdir)$$dir" || exit 1; \
+ 	  else \
