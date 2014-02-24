@@ -77,6 +77,7 @@ src_prepare() {
 	# maybe I should pull over part of dh-autoreconf to generate these in the build?
 	epatch "${FILESDIR}"/shadow-src-makefile.in.patch
 	epatch "${FILESDIR}"/shadow-src-makefile.in.1.patch
+	epatch "${FILESDIR}"/shadow-src-makefile.in.2.patch
 
 	epatch_user
 	elibtoolize

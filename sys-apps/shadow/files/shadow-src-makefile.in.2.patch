@@ -1,0 +1,23 @@
+diff -rupN src-orig/Makefile.in src/Makefile.in
+--- src-orig/Makefile.in	2014-02-23 20:28:31.165629283 -0800
++++ src/Makefile.in	2014-02-23 20:35:11.144634524 -0800
+@@ -184,7 +184,8 @@ newgrp_DEPENDENCIES = $(am__DEPENDENCIES
+ newgidmap_SOURCES = newgidmap.c
+ newgidmap_OBJECTS = newgidmap.$(OBJEXT)
+ newgidmap_DEPENDENCIES = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(top_builddir)/libmisc/libmisc.a \
++	$(top_builddir)/lib/libshadow.la
+ newusers_SOURCES = newusers.c
+ newusers_OBJECTS = newusers.$(OBJEXT)
+ newusers_DEPENDENCIES = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) \
+@@ -192,7 +193,8 @@ newusers_DEPENDENCIES = $(am__DEPENDENCI
+ newuidmap_SOURCES = newuidmap.c
+ newuidmap_OBJECTS = newuidmap.$(OBJEXT)
+ newuidmap_DEPENDENCIES = $(am__DEPENDENCIES_2) $(am__DEPENDENCIES_1) \
+-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
++	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
++	$(top_builddir)/libmisc/libmisc.a $(top_builddir)/lib/libshadow.la
+ nologin_SOURCES = nologin.c
+ nologin_OBJECTS = nologin.$(OBJEXT)
+ nologin_DEPENDENCIES =
