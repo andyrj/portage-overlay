@@ -1,0 +1,38 @@
+diff -rupN lib-orig/Makefile.in lib/Makefile.in
+--- lib-orig/Makefile.in	2014-02-23 18:12:15.250522161 -0800
++++ lib/Makefile.in	2014-02-23 18:15:07.888524423 -0800
+@@ -72,7 +72,7 @@ am__libshadow_la_SOURCES_DIST = commonio
+ 	nscd.h pam_defs.h port.c port.h prototypes.h pwauth.c pwauth.h \
+ 	pwio.c pwio.h pwmem.c selinux.c semanage.c sgetgrent.c \
+ 	sgetpwent.c sgetspent.c sgroupio.c sgroupio.h shadow.c \
+-	shadowio.c shadowio.h shadowmem.c spawn.c utent.c tcbfuncs.c \
++	shadowio.c shadowio.h shadowmem.c spawn.c subordinateio.c utent.c tcbfuncs.c \
+ 	tcbfuncs.h
+ @WITH_TCB_TRUE@am__objects_1 = tcbfuncs.lo
+ am_libshadow_la_OBJECTS = commonio.lo encrypt.lo fields.lo fputsx.lo \
+@@ -80,7 +80,7 @@ am_libshadow_la_OBJECTS = commonio.lo en
+ 	getulong.lo groupio.lo groupmem.lo gshadow.lo lockpw.lo \
+ 	nscd.lo port.lo pwauth.lo pwio.lo pwmem.lo selinux.lo \
+ 	semanage.lo sgetgrent.lo sgetpwent.lo sgetspent.lo sgroupio.lo \
+-	shadow.lo shadowio.lo shadowmem.lo spawn.lo utent.lo \
++	shadow.lo shadowio.lo shadowmem.lo spawn.lo subordinateio.lo utent.lo \
+ 	$(am__objects_1)
+ libshadow_la_OBJECTS = $(am_libshadow_la_OBJECTS)
+ libshadow_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
+@@ -267,7 +267,7 @@ libshadow_la_SOURCES = commonio.c common
+ 	pam_defs.h port.c port.h prototypes.h pwauth.c pwauth.h pwio.c \
+ 	pwio.h pwmem.c selinux.c semanage.c sgetgrent.c sgetpwent.c \
+ 	sgetspent.c sgroupio.c sgroupio.h shadow.c shadowio.c \
+-	shadowio.h shadowmem.c spawn.c utent.c $(am__append_1)
++	shadowio.h shadowmem.c spawn.c subordinateio.c utent.c $(am__append_1)
+ 
+ # These files are unneeded for some reason, listed in
+ # order of appearance:
+@@ -358,6 +358,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadowio.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/shadowmem.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spawn.Plo@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/subordinateio.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tcbfuncs.Plo@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/utent.Plo@am__quote@
+ 

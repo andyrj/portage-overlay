@@ -69,7 +69,7 @@ src_prepare() {
 	# better defaults from stgraber so containers can have nobody:nobody which requires 65534
 	epatch "${FILESDIR}"/1000_configure_userns
 	# my patch to fix lib/Makefile ...  not sure how ubuntu even builds this as is on the repo...
-	epatch "${FILESDIR}"/shadow-makefile.patch
+	epatch "${FILESDIR}"/shadow-makefile.in.patch
 
 	epatch_user
 	elibtoolize
