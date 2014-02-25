@@ -1,13 +1,13 @@
-diff -rupN docker-0.8.1-orig/execdriver/lxc/lxc_template.go docker-0.8.1/execdriver/lxc/lxc_template.go
---- docker-0.8.1-orig/execdriver/lxc/lxc_template.go	2014-02-24 15:33:28.047278849 -0800
-+++ docker-0.8.1/execdriver/lxc/lxc_template.go	2014-02-24 15:36:14.952292177 -0800
-@@ -38,6 +38,9 @@ lxc.cgroup.devices.allow = a
- # no implicit access to devices
- lxc.cgroup.devices.deny = a
+diff -rupN docker-0.8.1-orig/graph.go docker-0.8.1/graph.go
+--- docker-0.8.1-orig/graph.go	2014-02-24 17:33:00.421019960 -0800
++++ docker-0.8.1/graph.go	2014-02-24 18:03:18.003043774 -0800
+@@ -37,6 +37,9 @@ func NewGraph(root string, driver graphd
+ 		return nil, err
+ 	}
  
-+lxc.id_map = u 100000 65536
-+lxc.id_map = g 100000 65536
++	// HACK: hard coding a user namespace uid,gid
++	os.Chown(root, 100000, 100000)
 +
- # /dev/null and zero
- lxc.cgroup.devices.allow = c 1:3 rwm
- lxc.cgroup.devices.allow = c 1:5 rwm
+ 	graph := &Graph{
+ 		Root:    abspath,
+ 		idIndex: utils.NewTruncIndex(),
