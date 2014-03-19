@@ -11,10 +11,10 @@ JDK_URI="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-
 JCE_URI="http://www.oracle.com/technetwork/java/javase/downloads/jce-8-download-2133166.html"
 # This is a list of archs supported by this update.
 # Currently arm comes and goes.
-AT_AVAILABLE=( amd64 arm x86 x64-solaris x86-solaris sparc-solaris sparc64-solaris x86-macos x64-macos )
+AT_AVAILABLE=( amd64 arm x86 x86-macos x64-macos )
 # Sometimes some or all of the demos are missing, this is to not have to rewrite half
 # the ebuild when it happens.
-DEMOS_AVAILABLE=( amd64 arm x86 x64-solaris x86-solaris sparc-solaris sparc64-solaris x86-macos x64-macos )
+DEMOS_AVAILABLE=( amd64 arm x86 x86-macos x64-macos )
 FX_VERSION="2_2_51"
 
 MY_PV="$(get_version_component_range 2)$(get_version_component_range 4)"
@@ -22,11 +22,7 @@ S_PV="$(replace_version_separator 3 '_')"
 
 AT_x86="jdk-${MY_PV}-linux-i586.tar.gz"
 AT_amd64="jdk-${MY_PV}-linux-x64.tar.gz"
-AT_arm="jdk-${MY_PV}-linux-arm-vfp-sflt.tar.gz jdk-${MY_PV}-linux-arm-vfp-hflt.tar.gz"
-AT_x86_solaris="jdk-${MY_PV}-solaris-i586.tar.gz"
-AT_x64_solaris="${AT_x86_solaris} jdk-${MY_PV}-solaris-x64.tar.gz"
-AT_sparc_solaris="jdk-${MY_PV}-solaris-sparc.tar.gz"
-AT_sparc64_solaris="${AT_sparc_solaris} jdk-${MY_PV}-solaris-sparcv9.tar.gz"
+AT_arm="jdk-${MY_PV}-linux-arm-vfp-hflt.tar.gz"
 AT_x86_macos="jdk-${MY_PV}-macosx-x64.dmg"
 AT_x64_macos="jdk-${MY_PV}-macosx-x64.dmg"
 
@@ -35,10 +31,6 @@ FXDEMOS_linux="javafx_samples-${FX_VERSION}-linux.zip"
 DEMOS_x86="${FXDEMOS_linux} jdk-${MY_PV}-linux-i586-demos.tar.gz"
 DEMOS_amd64="${FXDEMOS_linux} jdk-${MY_PV}-linux-x64-demos.tar.gz"
 DEMOS_arm="${FXDEMOS_linux} jdk-${MY_PV}-linux-arm-vfp-hflt-demos.tar.gz"
-DEMOS_x86_solaris="jdk-${MY_PV}-solaris-i586-demos.tar.gz"
-DEMOS_x64_solaris="${DEMOS_x86_solaris} jdk-${MY_PV}-solaris-x64-demos.tar.gz"
-DEMOS_sparc_solaris="jdk-${MY_PV}-solaris-sparc-demos.tar.gz"
-DEMOS_sparc64_solaris="${DEMOS_sparc_solaris} jdk-${MY_PV}-solaris-sparcv9-demos.tar.gz"
 DEMOS_x86_macos="jdk-${MY_PV}-macosx-x86_64-demos.zip"
 DEMOS_x64_macos="jdk-${MY_PV}-macosx-x86_64-demos.zip"
 
