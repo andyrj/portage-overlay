@@ -9,17 +9,17 @@ HOMEPAGE="https://www.docker.io/"
 
 GITHUB_URI="github.com/crosbymichael/docker"
 
-if [[ ${PV} == *9999 ]]; then
+#if [[ ${PV} == *9999 ]]; then
 	SRC_URI=""
 	EGIT_REPO_URI="git://${GITHUB_URI}.git"
 	inherit git-2
 	KEYWORDS=""
-else
-	SRC_URI="https://${GITHUB_URI}/archive/v${PV}.zip -> ${P}.zip"
-	DOCKER_GITCOMMIT="2b3fdf2"
-	KEYWORDS="~amd64"
-	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
-fi
+#else
+#	SRC_URI="https://${GITHUB_URI}/archive/v${PV}.zip -> ${P}.zip"
+#	DOCKER_GITCOMMIT="2b3fdf2"
+#	KEYWORDS="~amd64"
+#	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
+#fi
 
 inherit bash-completion-r1 linux-info systemd udev user
 
