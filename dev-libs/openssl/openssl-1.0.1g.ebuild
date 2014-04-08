@@ -37,11 +37,11 @@ PDEPEND="app-misc/ca-certificates"
 src_unpack() {
 	unpack ${P}.tar.gz
 	SSL_CNF_DIR="/etc/ssl"
-	#sed \
-	#	-e "/^DIR=/s:=.*:=${EPREFIX}${SSL_CNF_DIR}:" \
-	#	-e "s:SSL_CMD=/usr:SSL_CMD=${EPREFIX}/usr:" \
-	#	"${DISTDIR}"/${PN}-c_rehash.sh.${REV} \
-	#	> "${WORKDIR}"/c_rehash || die #416717
+	sed \
+		-e "/^DIR=/s:=.*:=${EPREFIX}${SSL_CNF_DIR}:" \
+		-e "s:SSL_CMD=/usr:SSL_CMD=${EPREFIX}/usr:" \
+		"${DISTDIR}"/${PN}-c_rehash.sh.${REV} \
+		> "${WORKDIR}"/c_rehash || die #416717
 }
 
 src_prepare() {
@@ -49,18 +49,18 @@ src_prepare() {
 	# that gets blown away anyways by the Configure script in src_configure
 	rm -f Makefile
 
-	#if ! use vanilla ; then
-	#	epatch "${FILESDIR}"/${PN}-1.0.0a-ldflags.patch #327421
-	#	epatch "${FILESDIR}"/${PN}-1.0.0d-windres.patch #373743
-	#	epatch "${FILESDIR}"/${PN}-1.0.0h-pkg-config.patch
-	#	epatch "${FILESDIR}"/${PN}-1.0.1-parallel-build.patch
-	#	epatch "${FILESDIR}"/${PN}-1.0.1-x32.patch
-	#	epatch "${FILESDIR}"/${PN}-1.0.1e-ipv6.patch
-	#	epatch "${FILESDIR}"/${PN}-1.0.1f-perl-5.18.patch #497286
-	#	epatch "${FILESDIR}"/${PN}-1.0.1e-s_client-verify.patch #472584
-	#	epatch "${FILESDIR}"/${PN}-1.0.1f-revert-alpha-perl-generation.patch #499086
-	#	epatch_user #332661
-	#fi
+	if ! use vanilla ; then
+		epatch "${FILESDIR}"/${PN}-1.0.0a-ldflags.patch #327421
+		epatch "${FILESDIR}"/${PN}-1.0.0d-windres.patch #373743
+		epatch "${FILESDIR}"/${PN}-1.0.0h-pkg-config.patch
+		epatch "${FILESDIR}"/${PN}-1.0.1-parallel-build.patch
+		epatch "${FILESDIR}"/${PN}-1.0.1-x32.patch
+		epatch "${FILESDIR}"/${PN}-1.0.1e-ipv6.patch
+		epatch "${FILESDIR}"/${PN}-1.0.1f-perl-5.18.patch #497286
+		epatch "${FILESDIR}"/${PN}-1.0.1e-s_client-verify.patch #472584
+		epatch "${FILESDIR}"/${PN}-1.0.1f-revert-alpha-perl-generation.patch #499086
+		epatch_user #332661
+	fi
 
 	# disable fips in the build
 	# make sure the man pages are suffixed #302165
