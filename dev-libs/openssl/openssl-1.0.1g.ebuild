@@ -37,11 +37,11 @@ PDEPEND="app-misc/ca-certificates"
 src_unpack() {
 	unpack ${P}.tar.gz
 	SSL_CNF_DIR="/etc/ssl"
-	sed \
-		-e "/^DIR=/s:=.*:=${EPREFIX}${SSL_CNF_DIR}:" \
-		-e "s:SSL_CMD=/usr:SSL_CMD=${EPREFIX}/usr:" \
-		"${DISTDIR}"/${PN}-c_rehash.sh.${REV} \
-		> "${WORKDIR}"/c_rehash || die #416717
+	#sed \
+	#	-e "/^DIR=/s:=.*:=${EPREFIX}${SSL_CNF_DIR}:" \
+	#	-e "s:SSL_CMD=/usr:SSL_CMD=${EPREFIX}/usr:" \
+	#	"${DISTDIR}"/${PN}-c_rehash.sh.${REV} \
+	#	> "${WORKDIR}"/c_rehash || die #416717
 }
 
 src_prepare() {
