@@ -1,25 +1,25 @@
 # Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/docker/docker-0.9.0.ebuild,v 1.1 2014/03/11 17:57:50 gregkh Exp $
+# $Header: $
 
 EAPI=5
 
 DESCRIPTION="Docker complements kernel namespacing with a high-level API which operates at the process level."
 HOMEPAGE="https://www.docker.io/"
 
-GITHUB_URI="github.com/crosbymichael/docker"
+GITHUB_URI="github.com/dotcloud/docker"
 
-#if [[ ${PV} == *9999 ]]; then
+if [[ ${PV} == *9999 ]]; then
 	SRC_URI=""
 	EGIT_REPO_URI="git://${GITHUB_URI}.git"
 	inherit git-2
 	KEYWORDS=""
-#else
-#	SRC_URI="https://${GITHUB_URI}/archive/v${PV}.zip -> ${P}.zip"
-#	DOCKER_GITCOMMIT="2b3fdf2"
-#	KEYWORDS="~amd64"
-#	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
-#fi
+else
+	SRC_URI="https://${GITHUB_URI}/archive/v${PV}.zip -> ${P}.zip"
+	DOCKER_GITCOMMIT="3600720"
+	KEYWORDS="~amd64"
+	[ "$DOCKER_GITCOMMIT" ] || die "DOCKER_GITCOMMIT must be added manually for each bump!"
+fi
 
 inherit bash-completion-r1 linux-info systemd udev user
 
@@ -132,7 +132,7 @@ pkg_setup() {
 
 src_compile() {
 	# if we treat them right, Docker's build scripts will set up a
-	# reasonable GOAPTH for us
+	# reasonable GOPATH for us
 	export AUTO_GOPATH=1
 
 	# setup CFLAGS and LDFLAGS for separate build target
@@ -144,8 +144,8 @@ src_compile() {
 	[ "$DOCKER_GITCOMMIT" ] && export DOCKER_GITCOMMIT
 
 	if gcc-specs-pie; then
-		sed -i 's/export LDFLAGS_STATIC="/export LDFLAGS_STATIC="-extldflags=-fno-PIC /' hack/make/dynbinary || die
-		grep -q '-extldflags=-fno-PIC' hack/make/dynbinary || die 'sed failed'
+		sed -i "s/EXTLDFLAGS_STATIC='/EXTLDFLAGS_STATIC='-fno-PIC /" hack/make.sh || die
+		grep -q -- '-fno-PIC' hack/make.sh || die 'hardened sed failed'
 	fi
 
 	# time to build!
