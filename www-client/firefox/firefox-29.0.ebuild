@@ -362,10 +362,10 @@ src_install() {
 	# Required in order to use plugins and even run firefox on hardened.
 	pax-mark m "${ED}"${MOZILLA_FIVE_HOME}/{firefox,firefox-bin,plugin-container}
 
-	if use minimal; then
-		rm -r "${ED}"/usr/include "${ED}${MOZILLA_FIVE_HOME}"/{idl,include,lib,sdk} \
-			|| die "Failed to remove sdk and headers"
-	fi
+	#if use minimal; then
+	#	rm -r "${ED}"/usr/include "${ED}${MOZILLA_FIVE_HOME}"/{idl,include,lib,sdk} \
+	#		|| die "Failed to remove sdk and headers"
+	#fi
 
 	# very ugly hack to make firefox not sigbus on sparc
 	# FIXME: is this still needed??
