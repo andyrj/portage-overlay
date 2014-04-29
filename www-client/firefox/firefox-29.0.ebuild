@@ -144,10 +144,10 @@ src_unpack() {
 
 src_prepare() {
 	# Apply our patches
-	EPATCH_EXCLUDE="7007_fix_missing_strings.patch" \
-	EPATCH_SUFFIX="patch" \
-	EPATCH_FORCE="yes" \
-	epatch "${WORKDIR}/firefox"
+	#EPATCH_EXCLUDE="7007_fix_missing_strings.patch" \
+	#EPATCH_SUFFIX="patch" \
+	#EPATCH_FORCE="yes" \
+	#epatch "${WORKDIR}/firefox"
 
 	# Allow user to apply any additional patches without modifing ebuild
 	epatch_user
