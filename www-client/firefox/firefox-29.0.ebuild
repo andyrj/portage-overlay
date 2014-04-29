@@ -153,32 +153,32 @@ src_prepare() {
 	epatch_user
 
 	# Enable gnomebreakpad
-	if use debug ; then
-		sed -i -e "s:GNOME_DISABLE_CRASH_DIALOG=1:GNOME_DISABLE_CRASH_DIALOG=0:g" \
-			"${S}"/build/unix/run-mozilla.sh || die "sed failed!"
-	fi
+	#if use debug ; then
+	#	sed -i -e "s:GNOME_DISABLE_CRASH_DIALOG=1:GNOME_DISABLE_CRASH_DIALOG=0:g" \
+	#		"${S}"/build/unix/run-mozilla.sh || die "sed failed!"
+	#fi
 
 	# Ensure that our plugins dir is enabled as default
-	sed -i -e "s:/usr/lib/mozilla/plugins:/usr/lib/nsbrowser/plugins:" \
-		"${S}"/xpcom/io/nsAppFileLocationProvider.cpp || die "sed failed to replace plugin path for 32bit!"
-	sed -i -e "s:/usr/lib64/mozilla/plugins:/usr/lib64/nsbrowser/plugins:" \
-		"${S}"/xpcom/io/nsAppFileLocationProvider.cpp || die "sed failed to replace plugin path for 64bit!"
+	#sed -i -e "s:/usr/lib/mozilla/plugins:/usr/lib/nsbrowser/plugins:" \
+	#	"${S}"/xpcom/io/nsAppFileLocationProvider.cpp || die "sed failed to replace plugin path for 32bit!"
+	#sed -i -e "s:/usr/lib64/mozilla/plugins:/usr/lib64/nsbrowser/plugins:" \
+	#	"${S}"/xpcom/io/nsAppFileLocationProvider.cpp || die "sed failed to replace plugin path for 64bit!"
 
 	# Fix sandbox violations during make clean, bug 372817
-	sed -e "s:\(/no-such-file\):${T}\1:g" \
-		-i "${S}"/config/rules.mk \
-		-i "${S}"/js/src/config/rules.mk \
-		-i "${S}"/nsprpub/configure{.in,} \
-		|| die
+	#sed -e "s:\(/no-such-file\):${T}\1:g" \
+	#	-i "${S}"/config/rules.mk \
+	#	-i "${S}"/js/src/config/rules.mk \
+	#	-i "${S}"/nsprpub/configure{.in,} \
+	#	|| die
 
 	# Don't exit with error when some libs are missing which we have in
 	# system.
-	sed '/^MOZ_PKG_FATAL_WARNINGS/s@= 1@= 0@' \
-		-i "${S}"/browser/installer/Makefile.in || die
+	#sed '/^MOZ_PKG_FATAL_WARNINGS/s@= 1@= 0@' \
+	#	-i "${S}"/browser/installer/Makefile.in || die
 
 	# Don't error out when there's no files to be removed:
-	sed 's@\(xargs rm\)$@\1 -f@' \
-		-i "${S}"/toolkit/mozapps/installer/packager.mk || die
+	#sed 's@\(xargs rm\)$@\1 -f@' \
+	#	-i "${S}"/toolkit/mozapps/installer/packager.mk || die
 
 	eautoreconf
 
