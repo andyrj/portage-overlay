@@ -290,14 +290,14 @@ src_install() {
 	cd "${S}/${obj_dir}"
 
 	# Copy our preference before omnijar is created.
-	cp "${FILESDIR}"/thunderbird-gentoo-default-prefs-1.js-1 \
-		"${S}/${obj_dir}/mozilla/dist/bin/defaults/pref/all-gentoo.js" \
-		|| die
+	#cp "${FILESDIR}"/thunderbird-gentoo-default-prefs-1.js-1 \
+	#	"${S}/${obj_dir}/mozilla/dist/bin/defaults/pref/all-gentoo.js" \
+	#	|| die
 
 	# Set default path to search for dictionaries.
-	echo "pref(\"spellchecker.dictionary_path\", ${DICTPATH});" \
-		>> "${S}/${obj_dir}/mozilla/dist/bin/defaults/pref/all-gentoo.js" \
-		|| die
+	#echo "pref(\"spellchecker.dictionary_path\", ${DICTPATH});" \
+	#	>> "${S}/${obj_dir}/mozilla/dist/bin/defaults/pref/all-gentoo.js" \
+	#	|| die
 
 	# Pax mark xpcshell for hardened support, only used for startupcache creation.
 	pax-mark m "${S}"/${obj_dir}/mozilla/dist/bin/xpcshell
