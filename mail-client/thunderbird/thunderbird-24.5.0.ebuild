@@ -302,7 +302,7 @@ src_install() {
 	# Pax mark xpcshell for hardened support, only used for startupcache creation.
 	pax-mark m "${S}"/${obj_dir}/mozilla/dist/bin/xpcshell
 
-	MOZ_MAKE_FLAGS="${MAKEOPTS}" \
+	#MOZ_MAKE_FLAGS="${MAKEOPTS}" \
 	emake DESTDIR="${D}" install
 
 	# Install language packs
